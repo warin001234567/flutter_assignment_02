@@ -1,12 +1,12 @@
 import 'package:sqflite/sqflite.dart';
 
 final String tableTodo = "todo";
-final String columnId = "id";
+final String columnId = "_id";
 final String columnTitle = "title";
 final String columnDone = "done";
 
 class Todo {
-  int id;
+  int _id;
   String title;
   bool done = false;
 
@@ -15,8 +15,8 @@ Map<String, dynamic> toMap(){
     columnTitle: title,
     columnDone: done == true ? 1 : 0
   };
-  if (id != null){
-    map[columnId] = id;
+  if (_id != null){
+    map[columnId] = _id;
   }
   return map;
 }
@@ -26,7 +26,7 @@ Map<String, dynamic> toMap(){
   }
 
   Todo.fromMap(Map<String, dynamic> map){
-    id = map[columnId];
+    _id = map[columnId];
     title = map[columnTitle];
     done = map[columnDone] == 1;
   }
@@ -53,7 +53,7 @@ class TodoProvider {
   }
 
   Future<Todo> insert(Todo todo) async{
-    todo.id = await db.insert(tableTodo, todo.toMap());
+    todo._id = await db.insert(tableTodo, todo.toMap());
     return todo;
   }
 
@@ -72,7 +72,7 @@ class TodoProvider {
       tableTodo,
       todo.toMap(),
       where: '$columnId = ?',
-      whereArgs: [todo.id]
+      whereArgs: [todo._id]
       );
   }
 
